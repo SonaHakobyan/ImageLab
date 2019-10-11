@@ -3,24 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:models="clr-namespace:ImageLab.Models"
              xmlns:local="clr-namespace:ImageLab.UserControls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+             mc:Ignorable="d" >
+    
+    <TreeView ItemsSource="{Binding DirItems}">
+        <TreeView.Resources>
+            <HierarchicalDataTemplate DataType="{x:Type models:Folder}" 
+                                      ItemsSource="{Binding Path=Items}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Name="Icon"/>
+                        <ColumnDefinition Name="FolderName"/>
+                        <ColumnDefinition Name="Space" Width="50"/>
+                        <ColumnDefinition Name="BMP"/>
+                        <ColumnDefinition Name="PNG"/>
+                        <ColumnDefinition Name="JPEG"/>
+                        <ColumnDefinition Name="NAT"/>
+                    </Grid.ColumnDefinitions>
 
-        <!--<TreeView Grid.Column="0" ItemsSource="{Binding ImageSource}">
-            <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="{x:Type local:Group}" ItemsSource="{Binding SubGroups}">
-                    <TextBlock Text="{Binding Path=Name}" />
-                </HierarchicalDataTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type local:Entry}" ItemsSource="{Binding Entries}">
-                    <TextBlock Text="{Binding Path=Name}" />
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-        </TreeView>-->
-    </Grid>
+                    <Image Grid.Column="0" Source="..\Resources\folderIcon.jpg" Height="25" Width="25"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                </Grid>
+            </HierarchicalDataTemplate>
+
+            <DataTemplate DataType="{x:Type models:ImageSet}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Name="Icon"/>
+                        <ColumnDefinition Name="ImageName"/>
+                        <ColumnDefinition Name="Space" Width="50"/>
+                        <ColumnDefinition Name="BMP"/>
+                        <ColumnDefinition Name="PNG"/>
+                        <ColumnDefinition Name="JPEG"/>
+                        <ColumnDefinition Name="NAT"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Grid.Column="0" Source="..\Resources\imageIcon.png" Height="25" Width="25"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Name}"/>
+                </Grid>
+            </DataTemplate>
+        </TreeView.Resources>
+    </TreeView>
 </UserControl>

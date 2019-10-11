@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,8 +55,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\SelectOptionsCommand.cs" />
+    <Compile Include="Converters\LevelConverter.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
+    <Compile Include="Models\Details.cs" />
     <Compile Include="Models\Folder.cs" />
-    <Compile Include="Models\FormatType.cs" />
+    <Compile Include="Models\Format.cs" />
+    <Compile Include="Models\ImageSet.cs" />
+    <Compile Include="Services\DataProvider.cs" />
+    <Compile Include="Services\IDataProvider.cs" />
+    <Compile Include="Services\MockDataProvider.cs" />
+    <Compile Include="TreeGrid\TreeGridElement.cs" />
+    <Compile Include="TreeGrid\TreeGridFlatModel.cs" />
+    <Compile Include="TreeGrid\TreeGridModel.cs" />
     <Compile Include="UserControls\BMPViewer.xaml.cs">
       <DependentUpon>BMPViewer.xaml</DependentUpon>
     </Compile>
@@ -122,6 +135,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\folderIcon.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\imageIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
