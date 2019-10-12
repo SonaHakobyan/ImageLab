@@ -1,10 +1,16 @@
-﻿namespace ImageLab.Models
+﻿using System;
+
+namespace ImageLab.Models
 {
     public class Details
     {
-        public double Size { get; set; }
-        public decimal Compression { get; set; }
+        public Int32 Count { get; set; }
 
-        public override string ToString() => ( $"({Size} ) ( {Compression}% )");
+        public Double Size { get; set; }
+
+        public override String ToString()
+        {
+            return $"Count: {Count}, Size: {Size}";
+        }
     }
 }

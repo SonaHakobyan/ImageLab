@@ -3,23 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ImageLab"
-        xmlns:uc="clr-namespace:ImageLab.UserControls"
-        xmlns:vm="clr-namespace:ImageLab.ViewModels"
         xmlns:models="clr-namespace:ImageLab.Models"
-        xmlns:conv="clr-namespace:ImageLab.Converters"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="MainWindow" >
 
     <Window.Resources>
-        <GridLength x:Key="TreeToggleWidth">20</GridLength>
-        <conv:LevelConverter x:Key="LevelSpaceConverter" LevelWidth="{StaticResource TreeToggleWidth}"/>
-        <conv:VisibilityConverter x:Key="TreeToggleConverter"/>
+        <ResourceDictionary Source=".\Resources\Styles.xaml"/>
     </Window.Resources>
-
+    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -30,38 +25,42 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Name="Options" Grid.Column="0" Content="Options"
-                    Command="{Binding SelectOptionsCommand}"/>
+            <Button Grid.Column="0" Content="Options" Style="{StaticResource ButtonStyle}"
+                    Command="{Binding SelectOptionCommand}"/>
+            <ComboBox Grid.Column="1" Style="{StaticResource ComboBoxStyle}"/>
+            <Button Grid.Column="2" Content="Convert" Style="{StaticResource ButtonStyle}"
+                    Command="{Binding ConvertCommand}"/>
         </Grid>
-        
-        <DataGrid AutoGenerateColumns="False" Grid.Row="1" CanUserAddRows="False"
-                  ItemsSource="{Binding Model.FlatModel}">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn
-					Header="Name">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="{Binding Level, Converter={StaticResource LevelSpaceConverter}}"/>
-                                    <ColumnDefinition Width="{StaticResource TreeToggleWidth}"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
 
-                                <CheckBox 
-									Grid.Column="1"
-									IsChecked="{Binding IsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-									Visibility="{Binding HasChildren, Converter={StaticResource TreeToggleConverter}}"/>
-                                <TextBlock Grid.Column="2" Text="{Binding Name}"/>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Count" Binding="{Binding Count}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="BMP" Binding="{Binding BMPDetails}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="PNG" Binding="{Binding PNGDetails}" IsReadOnly="True"/>
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TreeView Grid.Column="0" ItemsSource="{Binding RootItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Items}">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox Command="{Binding DataContext.CheckBoxCheckedCommand, RelativeSource={RelativeSource FindAncestor, AncestorType = Window}}"
+                                      IsChecked="{Binding IsVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Text="{Binding Name}" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+            <ListView Grid.Column="1" ItemsSource="{Binding ListViewItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header = "BMP" DisplayMemberBinding = "{Binding BmpDetails}"/>
+                        <GridViewColumn Header = "PNG" DisplayMemberBinding = "{Binding PngDetails}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
     </Grid>
     
 </Window>
