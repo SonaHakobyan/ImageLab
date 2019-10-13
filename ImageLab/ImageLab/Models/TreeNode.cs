@@ -11,12 +11,11 @@ namespace ImageLab.Models
             Items = new ObservableCollection<TreeNode>();
         }
 
-        public Boolean IsVisible { get; set; }
-        public String Name { get; set; }
-        public EntryType EntryType { get; set; }
-
-        public String FullPath { get; set; }
-
         public ObservableCollection<TreeNode> Items { get; set; }
+
+        public EntryType EntryType { get; set; }
+        public Boolean IsVisible { get; set; }
+        public String FullPath { get; set; }
+        public String Name { get; set; }
     }
 }

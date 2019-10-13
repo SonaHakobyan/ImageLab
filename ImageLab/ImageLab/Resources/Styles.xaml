@@ -14,4 +14,10 @@
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="Margin" Value="2"/>
     </Style>
+
+    <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="Height" Value="25"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="2"/>
+    </Style>
 </ResourceDictionary>

@@ -57,5 +57,18 @@ namespace ImageLab.Services
 
             return (attr & FileAttributes.Directory) == FileAttributes.Directory ? EntryType.Directory : EntryType.Image;
         }
+
+        public static void GetCheckedItems(TreeNode sourceItem, List<TreeNode> checkedItems)
+        {
+            if (sourceItem.IsVisible)
+            {
+                checkedItems.Add(sourceItem);
+            }
+
+            foreach (TreeNode item in sourceItem.Items)
+            {
+                GetCheckedItems(item, checkedItems);
+            }
+        }
     }
 }

@@ -16,14 +16,38 @@ namespace ImageLab.ViewModels
 
         public ICommand SelectOptionCommand { get; set; }
         public ICommand CheckBoxCheckedCommand { get; set; }
+        public ICommand ConvertImageCommand { get; set; }
+        // public ICommand SelectedItemChangedCommand { get; set; }
+
+        private String selectedImage;
+        public String SelectedImage
+        {
+            get => selectedImage;
+            set
+            {
+                selectedImage = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ImageFormat convertingFormat;
+        public ImageFormat ConvertingFormat
+        {
+            get => convertingFormat;
+            set
+            {
+                convertingFormat = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         private ObservableCollection<TreeNode> rootItem;
         public ObservableCollection<TreeNode> RootItem
         {
-            get => this.rootItem;
+            get => rootItem;
             set
             {
-                this.rootItem = value;
+                rootItem = value;
                 NotifyPropertyChanged();
             }
         }
@@ -43,6 +67,8 @@ namespace ImageLab.ViewModels
         {
             SelectOptionCommand = new SelectOptionCommand(this);
             CheckBoxCheckedCommand = new CheckBoxCheckedCommand(this);
+            ConvertImageCommand = new ConvertImageCommand(this);
+            //SelectedItemChangedCommand = new SelectedItemChangedCommand(this);
         }
 
         public void UpdateTreeView()
@@ -51,19 +77,6 @@ namespace ImageLab.ViewModels
             Methods.GetTreeView(this.RootPath, ref tree);
 
             RootItem = new ObservableCollection<TreeNode> { tree };
-        }
-
-        public void GetCheckedItems(TreeNode sourceItem, List<TreeNode> checkedItems)
-        {
-            if (sourceItem.IsVisible)
-            {
-                checkedItems.Add(sourceItem);
-            }
-
-            foreach (TreeNode item in sourceItem.Items)
-            {
-                GetCheckedItems(item, checkedItems);
-            }
         }
 
         public Details GetDetails(String path, String searchPattern = null)
