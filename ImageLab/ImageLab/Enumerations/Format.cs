@@ -1,6 +1,6 @@
 ﻿namespace ImageLab.Enumerations
 {
-    public enum ImageFormat
+    public enum Format
     {
         Bmp = 1,
         Png,

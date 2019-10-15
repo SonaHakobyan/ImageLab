@@ -12,12 +12,15 @@ namespace ImageLab.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        public string RootPath { get; set; }
-
+        #region Commands
         public ICommand SelectOptionCommand { get; set; }
         public ICommand CheckBoxCheckedCommand { get; set; }
         public ICommand ConvertImageCommand { get; set; }
         // public ICommand SelectedItemChangedCommand { get; set; }
+        #endregion
+
+        #region Bindable Properties
+        public string RootPath { get; set; }
 
         private String selectedImage;
         public String SelectedImage
@@ -30,13 +33,13 @@ namespace ImageLab.ViewModels
             }
         }
 
-        private ImageFormat convertingFormat;
-        public ImageFormat ConvertingFormat
+        private ObservableCollection<Format> convertableFormatsList;
+        public ObservableCollection<Format> ConvertableFormatsList
         {
-            get => convertingFormat;
+            get => convertableFormatsList;
             set
             {
-                convertingFormat = value;
+                convertableFormatsList = value;
                 NotifyPropertyChanged();
             }
         }
@@ -62,9 +65,12 @@ namespace ImageLab.ViewModels
                 NotifyPropertyChanged();
             }
         }
+        #endregion
 
         public MainViewModel()
         {
+            ConvertableFormatsList = new ObservableCollection<Format> { Format.Png, Format.Jpg};
+
             SelectOptionCommand = new SelectOptionCommand(this);
             CheckBoxCheckedCommand = new CheckBoxCheckedCommand(this);
             ConvertImageCommand = new ConvertImageCommand(this);

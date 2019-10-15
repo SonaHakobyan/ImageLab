@@ -29,16 +29,14 @@
 
             <Button Grid.Column="0" Content="Options" Style="{StaticResource ButtonStyle}"
                     Command="{Binding SelectOptionCommand}"/>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <RadioButton Content="PNG" Style="{StaticResource RadioButtonStyle}"/>
-                <RadioButton Content="JPG" Style="{StaticResource RadioButtonStyle}"/>
-                <RadioButton Content="NAT" Style="{StaticResource RadioButtonStyle}"/>
-            </StackPanel>
+            
+            <ComboBox Name="cb" Grid.Column="1" Style="{StaticResource ComboBoxStyle}"
+                      ItemsSource="{Binding ConvertableFormatsList}"
+                      IsSynchronizedWithCurrentItem="True"/>
 
-            <!--<ComboBox Grid.Column="1" Style="{StaticResource ComboBoxStyle}"
-                      ItemsSource="{Binding ConvertableFormats}" SelectedItem="{Binding ConvertingFormat}"/>-->
             <Button Grid.Column="2" Content="Convert" Style="{StaticResource ButtonStyle}"
-                    Command="{Binding ConvertImageCommand}"/>
+                    Command="{Binding ConvertImageCommand}"
+                    CommandParameter="{Binding SelectedItem, ElementName=cb}"/>
         </Grid>
 
         <Grid Grid.Row="1">
