@@ -1,5 +1,6 @@
 ﻿using ImageLab.Enumerations;
 using ImageLab.Models;
+using ImageLab.Services;
 using ImageLab.ViewModels;
 using System;
 using System.IO;
@@ -32,6 +33,11 @@ namespace ImageLab
                     (this.DataContext as MainViewModel).SelectedImage = path;
                 }
             }
+        }
+
+        private void TreeView_Chnaged(object sender, RoutedEventArgs e)
+        {
+            Methods.UpdateView(this.DataContext as MainViewModel);
         }
     }
 }

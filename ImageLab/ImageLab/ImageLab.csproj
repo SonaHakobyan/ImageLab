@@ -62,11 +62,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Commands\CheckBoxCheckedCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ConvertImageCommand.cs" />
-    <Compile Include="Commands\SelectedItemChangedCommand.cs" />
     <Compile Include="Commands\SelectOptionCommand.cs" />
+    <Compile Include="Converters\EntryTypeToIconConverter.cs" />
     <Compile Include="Enumerations\EntryType.cs" />
     <Compile Include="Enumerations\Format.cs" />
     <Compile Include="Models\Details.cs" />

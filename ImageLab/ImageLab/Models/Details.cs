@@ -10,7 +10,7 @@ namespace ImageLab.Models
 
         public override String ToString()
         {
-            return $"Count: {Count}, Size: {Size}";
+            return $"C: {Count}, S: {Size}";
         }
     }
 }

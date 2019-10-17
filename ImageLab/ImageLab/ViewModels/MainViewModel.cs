@@ -14,9 +14,7 @@ namespace ImageLab.ViewModels
     {
         #region Commands
         public ICommand SelectOptionCommand { get; set; }
-        public ICommand CheckBoxCheckedCommand { get; set; }
         public ICommand ConvertImageCommand { get; set; }
-        // public ICommand SelectedItemChangedCommand { get; set; }
         #endregion
 
         #region Bindable Properties
@@ -72,9 +70,7 @@ namespace ImageLab.ViewModels
             ConvertableFormatsList = new ObservableCollection<Format> { Format.Png, Format.Jpg};
 
             SelectOptionCommand = new SelectOptionCommand(this);
-            CheckBoxCheckedCommand = new CheckBoxCheckedCommand(this);
             ConvertImageCommand = new ConvertImageCommand(this);
-            //SelectedItemChangedCommand = new SelectedItemChangedCommand(this);
         }
 
         public void UpdateTreeView()

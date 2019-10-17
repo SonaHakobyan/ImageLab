@@ -14,8 +14,21 @@ namespace ImageLab.Models
         public ObservableCollection<TreeNode> Items { get; set; }
 
         public EntryType EntryType { get; set; }
-        public Boolean IsVisible { get; set; }
+        public Boolean Visible
+        {
+            get { return visible; }
+            set
+            {
+                foreach (TreeNode item in Items)
+                {
+                    item.visible = value; 
+                }
+                if (value) { visible = value; }
+            }
+        }
         public String FullPath { get; set; }
         public String Name { get; set; }
+
+        public Boolean visible;
     }
 }
