@@ -4,17 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="clr-namespace:ImageLab.Models"
-        xmlns:converters="clr-namespace:ImageLab.Converters"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" >
+        WindowState="Maximized"
+        Title="ImageLab" >
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source=".\Resources\Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <converters:EntryTypeToIconConverter x:Key="EntryTypeToIconConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -22,7 +21,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -33,7 +32,7 @@
             <Button Content="Options" Style="{StaticResource ButtonStyle}"
                     Command="{Binding SelectOptionCommand}"/>
         </StackPanel>
-        
+
         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
             <ComboBox Name="cb" Style="{StaticResource ComboBoxStyle}"
                       ItemsSource="{Binding ConvertableFormatsList}"
@@ -45,39 +44,31 @@
 
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="21"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <TextBlock Grid.Row="0" Text="Name"/>
-            <TreeView Grid.Row="1" SelectedItemChanged="TreeView_SelectedItemChanged" 
+
+            <TreeView Grid.Row="1" Margin="0, 23, 0, 0"
+                      SelectedItemChanged="TreeView_SelectedItemChanged" 
                       TreeViewItem.Expanded="TreeView_Chnaged" TreeViewItem.Collapsed="TreeView_Chnaged"
                       ItemsSource="{Binding RootItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            <TreeView.ItemTemplate >
-                <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Items}">
-                    <StackPanel>
-                        <Image Source="{Binding EntryType, Converter={StaticResource EntryTypeToIconConverter}}"/>
-                        <TextBlock Text="{Binding Name}" />
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
+                <TreeView.ItemTemplate >
+                    <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Items}">
+                        <TextBlock Text="{Binding Name}" Height="19"/>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="{Binding Visible, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
                     </Style>
-            </TreeView.ItemContainerStyle>
-        </TreeView>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
         </Grid>
 
-        <ListView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding ListViewItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header = "Name" DisplayMemberBinding = "{Binding Name}"/>
-                    <GridViewColumn Header = "BMP" DisplayMemberBinding = "{Binding BmpDetails}"/>
-                    <GridViewColumn Header = "PNG" DisplayMemberBinding = "{Binding PngDetails}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <DataGrid AutoGenerateColumns="True"  IsReadOnly="True"
+                     ItemsSource="{Binding ListViewItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </DataGrid>
+        </Grid>
 
         <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
             <Image Source="{Binding  SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

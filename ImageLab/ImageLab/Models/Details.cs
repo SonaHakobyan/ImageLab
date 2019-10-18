@@ -8,9 +8,16 @@ namespace ImageLab.Models
 
         public Double Size { get; set; }
 
+        public Double Comparison { get; set; }
+
         public override String ToString()
         {
-            return $"C: {Count}, S: {Size}";
+            String result = $"C:{Count} | S:{Size}";
+            if (Comparison > 0)
+            {
+                result += $" | Cr:{Comparison} %";
+            }
+            return result;
         }
     }
 }

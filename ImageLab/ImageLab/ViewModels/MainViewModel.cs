@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Windows.Input;
 
 namespace ImageLab.ViewModels
@@ -27,6 +28,17 @@ namespace ImageLab.ViewModels
             set
             {
                 selectedImage = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private ConvertionError convertionError;
+        public ConvertionError ConvertionError
+        {
+            get => convertionError;
+            set
+            {
+                convertionError = value;
                 NotifyPropertyChanged();
             }
         }
@@ -76,44 +88,57 @@ namespace ImageLab.ViewModels
         public void UpdateTreeView()
         {
             var tree = new TreeNode();
-            Methods.GetTreeView(this.RootPath, ref tree);
+            Helper.GetTreeView(this.RootPath, ref tree);
 
             RootItem = new ObservableCollection<TreeNode> { tree };
         }
 
-        public Details GetDetails(String path, String searchPattern = null)
+        public void UpdateView()
         {
-            EntryType entryType = Methods.GetEntryType(path);
+            List<TreeNode> expandedItems = new List<TreeNode>();
+            var tree = RootItem.FirstOrDefault();
 
-            if (entryType == EntryType.Image)
+            Helper.GetExpandedItems(tree, expandedItems);
+
+            ObservableCollection<GridRowModel> rows = new ObservableCollection<GridRowModel>();
+
+            foreach (TreeNode item in expandedItems)
             {
-                FileInfo fileInfo = new FileInfo(path);
+                GridRowModel row = new GridRowModel();
+                row.Name = item.Name;
 
-                return new Details
+                if (item.EntryType == EntryType.Image)
                 {
-                    Count = 1,
-                    Size = fileInfo.Length
-                };
-            }
-            else
-            {
-                String[] files = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
+                    String fileDirectory = Path.GetDirectoryName(item.FullPath);
 
-                Double size = 0;
+                    String fileName = Path.GetFileNameWithoutExtension(item.FullPath);
 
-                foreach (String file in files)
+                    String bmpFilePath = Path.Combine(fileDirectory, fileName + ".bmp");
+
+                    if (File.Exists(bmpFilePath))
+                    {
+                        row.BmpDetails = Helper.GetDetails(bmpFilePath);
+
+                        String pngFilePath = Path.Combine(fileDirectory, fileName + ".png");
+
+                        if (File.Exists(pngFilePath))
+                        {
+                            row.PngDetails = Helper.GetDetails(pngFilePath);
+                            row.PngDetails.Comparison = 100 / (row.BmpDetails.Size / row.PngDetails.Size);
+                        }
+                    }
+                }
+                else
                 {
-                    FileInfo fileInfo = new FileInfo(file);
+                    row.BmpDetails = Helper.GetDetails(item.FullPath, "*.bmp");
 
-                    size += fileInfo.Length;
+                    row.PngDetails = Helper.GetDetails(item.FullPath, "*.png");
                 }
 
-                return new Details
-                {
-                    Count = files.Length,
-                    Size = size
-                };
+                rows.Add(row);
             }
+
+            ListViewItems = rows;
         }
     }
 }

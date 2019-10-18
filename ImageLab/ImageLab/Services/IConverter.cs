@@ -7,6 +7,6 @@
         /// </summary>
         /// <param name="imagePath"></param>
         /// <returns></returns>
-        bool Convert(string image);
+        bool Convert(string imagePath);
     }
 }

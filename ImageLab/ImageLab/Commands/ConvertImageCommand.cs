@@ -1,11 +1,8 @@
 ﻿using ImageLab.Enumerations;
+using ImageLab.Models;
 using ImageLab.Services;
 using ImageLab.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImageLab.Commands
 {
@@ -29,6 +26,14 @@ namespace ImageLab.Commands
                 {
                     converter = new PngConverter();
                     Boolean succeed = converter.Convert(vm.SelectedImage);
+                    if (succeed)
+                    {
+                        vm.UpdateView();
+                    }
+                    else
+                    {
+                        vm.ConvertionError = new ConvertionError { Format = format };
+                    }
                 }
                 else
                 {

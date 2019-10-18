@@ -1,6 +1,5 @@
 ﻿using ImageLab.Enumerations;
 using ImageLab.Models;
-using ImageLab.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,13 +8,13 @@ using System.Linq;
 
 namespace ImageLab.Services
 {
-    public static class Methods
+    public static class Helper
     {
         public static void GetTreeView(String basePath, ref TreeNode viewItem, TreeNode parentItem = null)
         {
             EntryType entryType = GetEntryType(basePath);
 
-            String name = System.IO.Path.GetFileNameWithoutExtension(basePath);
+            String name = Path.GetFileNameWithoutExtension(basePath);
 
             if (entryType == EntryType.Image && parentItem != null && parentItem.Items.Any(x => x.Name == name && x.EntryType == entryType))
             {
@@ -23,7 +22,7 @@ namespace ImageLab.Services
             }
 
             viewItem.Items = new ObservableCollection<TreeNode>();
-            viewItem.Name = System.IO.Path.GetFileNameWithoutExtension(basePath);
+            viewItem.Name = Path.GetFileNameWithoutExtension(basePath);
             viewItem.EntryType = entryType;
             viewItem.FullPath = basePath;
 
@@ -86,52 +85,39 @@ namespace ImageLab.Services
             }
         }
 
-        public static void UpdateView(MainViewModel vm)
+        public static Details GetDetails(String path, String searchPattern = null)
         {
-            List<TreeNode> expandedItems = new List<TreeNode>();
-            var tree = vm.RootItem.FirstOrDefault();
+            EntryType entryType = Helper.GetEntryType(path);
 
-            Methods.GetExpandedItems(tree, expandedItems);
-
-            ObservableCollection<GridRowModel> rows = new ObservableCollection<GridRowModel>();
-
-            foreach (TreeNode item in expandedItems)
+            if (entryType == EntryType.Image)
             {
-                GridRowModel row = new GridRowModel();
-                row.Name = item.Name;
+                FileInfo fileInfo = new FileInfo(path);
 
-                if (item.EntryType == EntryType.Image)
+                return new Details
                 {
-                    String fileDirectory = Path.GetDirectoryName(item.FullPath);
-
-                    String fileName = Path.GetFileNameWithoutExtension(item.FullPath);
-
-                    String bmpFilePath = Path.Combine(fileDirectory, fileName + ".bmp");
-
-                    if (File.Exists(bmpFilePath))
-                    {
-                        row.BmpDetails = vm.GetDetails(bmpFilePath);
-                    }
-
-                    String pngFilePath = Path.Combine(fileDirectory, fileName + ".png");
-
-                    if (File.Exists(pngFilePath))
-                    {
-                        row.PngDetails = vm.GetDetails(pngFilePath);
-                    }
-                }
-                else
-                {
-                    row.BmpDetails = vm.GetDetails(item.FullPath, "*.bmp");
-
-                    row.PngDetails = vm.GetDetails(item.FullPath, "*.png");
-                }
-
-                rows.Add(row);
+                    Count = 1,
+                    Size = fileInfo.Length
+                };
             }
+            else
+            {
+                String[] files = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
 
-            vm.ListViewItems = rows;
+                Double size = 0;
+
+                foreach (String file in files)
+                {
+                    FileInfo fileInfo = new FileInfo(file);
+
+                    size += fileInfo.Length;
+                }
+
+                return new Details
+                {
+                    Count = files.Length,
+                    Size = size
+                };
+            }
         }
-
     }
 }

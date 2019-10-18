@@ -65,14 +65,14 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ConvertImageCommand.cs" />
     <Compile Include="Commands\SelectOptionCommand.cs" />
-    <Compile Include="Converters\EntryTypeToIconConverter.cs" />
     <Compile Include="Enumerations\EntryType.cs" />
     <Compile Include="Enumerations\Format.cs" />
+    <Compile Include="Models\ConvertionError.cs" />
     <Compile Include="Models\Details.cs" />
     <Compile Include="Models\GridRowModel.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Services\IConverter.cs" />
-    <Compile Include="Services\Methods.cs" />
+    <Compile Include="Services\Helper.cs" />
     <Compile Include="Services\PngConverter.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
