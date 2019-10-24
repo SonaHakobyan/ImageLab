@@ -9,6 +9,8 @@ namespace ImageLab.Models
         public TreeNode()
         {
             Items = new ObservableCollection<TreeNode>();
+            Id = id;
+            ++id;
         }
 
         public ObservableCollection<TreeNode> Items { get; set; }
@@ -28,7 +30,9 @@ namespace ImageLab.Models
         }
         public String FullPath { get; set; }
         public String Name { get; set; }
+        public Int32 Id { get; private set; }
 
+        public static Int32 id;
         public Boolean visible;
     }
 }

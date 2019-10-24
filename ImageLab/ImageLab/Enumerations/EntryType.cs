@@ -2,7 +2,7 @@
 {
     public enum EntryType
     {
-        Directory = 1,
+        Directory,
         Image
     }
 }

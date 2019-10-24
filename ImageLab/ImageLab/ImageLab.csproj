@@ -62,17 +62,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\BindableSelectedItemBehavior.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ConvertImageCommand.cs" />
     <Compile Include="Commands\SelectOptionCommand.cs" />
+    <Compile Include="Converters\ItemToIdConverter.cs" />
     <Compile Include="Enumerations\EntryType.cs" />
     <Compile Include="Enumerations\Format.cs" />
     <Compile Include="Models\ConvertionError.cs" />
     <Compile Include="Models\Details.cs" />
     <Compile Include="Models\GridRowModel.cs" />
     <Compile Include="Models\TreeNode.cs" />
-    <Compile Include="Services\IConverter.cs" />
+    <Compile Include="Services\IFormatConverter.cs" />
     <Compile Include="Services\Helper.cs" />
+    <Compile Include="Services\NatConverter.cs" />
     <Compile Include="Services\PngConverter.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

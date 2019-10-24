@@ -9,7 +9,7 @@ namespace ImageLab.Commands
     public class ConvertImageCommand : CommandBase
     {
         private MainViewModel vm;
-        private IConverter converter;
+        private IFormatConverter converter;
 
         public ConvertImageCommand(MainViewModel vm)
         {
@@ -22,22 +22,28 @@ namespace ImageLab.Commands
         {
             if (parameter is Format format)
             {
-                if (format == Format.Png)
+                switch (format)
                 {
-                    converter = new PngConverter();
-                    Boolean succeed = converter.Convert(vm.SelectedImage);
-                    if (succeed)
-                    {
-                        vm.UpdateView();
-                    }
-                    else
-                    {
-                        vm.ConvertionError = new ConvertionError { Format = format };
-                    }
+                    case Format.PNG:
+                        converter = new PngConverter();
+                        break;
+                    case Format.NAT:
+                        converter = new NatConverter();
+                        break;
+                    case Format.Unknown:
+                        throw new Exception("Unknown Format");
+                    default:
+                        break;
+                }
+
+                Boolean succeed = converter.Convert(vm.SelectedImage);
+                if (succeed)
+                {
+                    vm.UpdateView();
                 }
                 else
                 {
-                    throw new Exception();
+                    vm.ConvertionError = new ConvertionError { Format = format };
                 }
             }           
         }

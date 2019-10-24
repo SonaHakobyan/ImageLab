@@ -5,7 +5,7 @@ using System.IO;
 
 namespace ImageLab.Services
 {
-    public class PngConverter : IConverter
+    public class PngConverter : IFormatConverter
     {
         public bool Convert(string imagePath)
         {

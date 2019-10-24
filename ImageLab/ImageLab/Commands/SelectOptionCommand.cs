@@ -5,13 +5,14 @@ namespace ImageLab.Commands
 {
     public class SelectOptionCommand : CommandBase
     {
-        private string path;
+        private string defaultPath;
         private MainViewModel vm;
 
         public SelectOptionCommand(MainViewModel vm)
         {
             this.vm = vm;
-            path = @"C:\Users\hakob\ImageLabResources";
+            this.defaultPath = @"C:\Users\hakob\ImageLabResources";
+            this.vm.RootPath = Properties.Settings.Default.DirectoryPath;
         }
 
         public override bool CanExecute(object parameter) => true;
@@ -19,11 +20,14 @@ namespace ImageLab.Commands
         public override void Execute(object parameter)
         {
             var dialog = new FolderBrowserDialog();
-            dialog.SelectedPath = path;
+            dialog.SelectedPath = defaultPath;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 vm.RootPath = dialog.SelectedPath;
-                vm.UpdateTreeView();
+                vm.LoadView();
+
+                Properties.Settings.Default.DirectoryPath = dialog.SelectedPath;
+                Properties.Settings.Default.Save();
             }
         }
     }

@@ -17,6 +17,8 @@ namespace ImageLab
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            (this.DataContext as MainViewModel).SelectedImage = string.Empty;
+
             if (e.NewValue is TreeNode node && node.EntryType == EntryType.Image)
             {
                 String path = node.FullPath;

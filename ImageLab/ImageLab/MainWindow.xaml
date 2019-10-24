@@ -3,7 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:e="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:models="clr-namespace:ImageLab.Models"
+        xmlns:convs ="clr-namespace:ImageLab.Converters"
+        xmlns:behaviors="clr-namespace:ImageLab.Behaviors"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
@@ -14,64 +17,79 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source=".\Resources\Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+        <convs:ItemToIdConverter x:Key="ItemToIdConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-            <Button Content="Options" Style="{StaticResource ButtonStyle}"
-                    Command="{Binding SelectOptionCommand}"/>
-        </StackPanel>
-
-        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-            <ComboBox Name="cb" Style="{StaticResource ComboBoxStyle}"
-                      ItemsSource="{Binding ConvertableFormatsList}"
-                      IsSynchronizedWithCurrentItem="True"/>
-            <Button Content="Convert" Style="{StaticResource ButtonStyle}"
-                    Command="{Binding ConvertImageCommand}"
-                    CommandParameter="{Binding SelectedItem, ElementName=cb}"/>
-        </StackPanel>
-
-        <Grid Grid.Column="0" Grid.Row="1">
+        <Grid Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TreeView Grid.Row="1" Margin="0, 23, 0, 0"
-                      SelectedItemChanged="TreeView_SelectedItemChanged" 
-                      TreeViewItem.Expanded="TreeView_Chnaged" TreeViewItem.Collapsed="TreeView_Chnaged"
-                      ItemsSource="{Binding RootItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <TreeView.ItemTemplate >
-                    <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Items}">
-                        <TextBlock Text="{Binding Name}" Height="19"/>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-                <TreeView.ItemContainerStyle>
-                    <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="{Binding Visible, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
-                    </Style>
-                </TreeView.ItemContainerStyle>
-            </TreeView>
+            <Border Grid.Row="0" Style="{StaticResource BorderStyle}">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Options" Style="{StaticResource ButtonStyle}"
+                        Command="{Binding SelectOptionCommand}"/>
+                    <ComboBox Name="cb" Style="{StaticResource ComboBoxStyle}"
+                          ItemsSource="{Binding ConvertableFormatsList}"
+                          IsSynchronizedWithCurrentItem="True"/>
+                    <Button Content="Convert" Style="{StaticResource ButtonStyle}"
+                        Command="{Binding ConvertImageCommand}"
+                        CommandParameter="{Binding SelectedItem, ElementName=cb}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Row="1" Style="{StaticResource BorderStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TreeView Grid.Column="0" Style="{StaticResource TreeViewStyle}"
+                                SelectedItemChanged="TreeView_SelectedItemChanged" 
+                                TreeViewItem.Expanded="TreeView_Chnaged" TreeViewItem.Collapsed="TreeView_Chnaged"
+                                ItemsSource="{Binding RootItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <e:Interaction.Behaviors>
+                            <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </e:Interaction.Behaviors>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Items}">
+                                <TextBlock Text="{Binding Name}" Height="19"/>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="{x:Type TreeViewItem}">                                
+                                <Setter Property="IsExpanded" Value="{Binding Visible, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                    </TreeView>
+
+                    <DataGrid Grid.Column="1" Style="{StaticResource DataGridStyle}"
+                                ItemsSource="{Binding ListViewItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding SelectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGrid.Columns >
+                            <DataGridTextColumn Header="BMP" Binding="{Binding BmpDetails}"/>
+                            <DataGridTextColumn Header="NAT" Binding="{Binding NatDetails}"/>
+                            <DataGridTextColumn Header="PNG" Binding="{Binding PngDetails}"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
         </Grid>
 
-        <Grid Grid.Column="1" Grid.Row="1">
-            <DataGrid AutoGenerateColumns="True"  IsReadOnly="True"
-                     ItemsSource="{Binding ListViewItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-            </DataGrid>
-        </Grid>
-
-        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Vertical">
+        <Border Grid.Column="1" Style="{StaticResource BorderStyle}">
+            <StackPanel Grid.Column="1" Orientation="Vertical">
             <Image Source="{Binding  SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
+        </Border>
     </Grid>
 </Window>

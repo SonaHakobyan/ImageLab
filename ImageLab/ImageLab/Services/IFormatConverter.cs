@@ -1,6 +1,6 @@
 ﻿namespace ImageLab.Services
 {
-    public interface IConverter
+    public interface IFormatConverter
     {
         /// <summary>
         /// Convert BMP file to another image format

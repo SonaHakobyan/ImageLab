@@ -2,9 +2,9 @@
 {
     public enum Format
     {
-        Bmp = 1,
-        Png,
-        Jpg,
+        BMP,
+        PNG,
+        NAT,
         Unknown
     }
 }

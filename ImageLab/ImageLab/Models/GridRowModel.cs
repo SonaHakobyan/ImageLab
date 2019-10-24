@@ -1,8 +1,10 @@
-﻿namespace ImageLab.Models
+﻿using System;
+
+namespace ImageLab.Models
 {
     public class GridRowModel
     {
-        public string Name { get; set; }
+        public Int32 Id { get; set; }
 
         public Details BmpDetails { get; set; }
 

@@ -32,6 +32,34 @@ namespace ImageLab.ViewModels
             }
         }
 
+        private GridRowModel selectedRow;
+        public GridRowModel SelectedRow
+        {
+            get => selectedRow;
+            set
+            {
+                selectedRow = value;
+                NotifyPropertyChanged();
+
+                selectedNode = RootItem.Where(x => x.Id == value.Id).FirstOrDefault();
+                NotifyPropertyChanged("SelectedRow");
+            }
+        }
+
+        private TreeNode selectedNode;
+        public TreeNode SelectedNode
+        {
+            get => selectedNode;
+            set
+            {
+                selectedNode = value;
+                NotifyPropertyChanged();
+
+                selectedRow = ListViewItems.Where(x => x.Id == value.Id).FirstOrDefault();
+                NotifyPropertyChanged("SelectedNode");
+            }
+        }
+
         private ConvertionError convertionError;
         public ConvertionError ConvertionError
         {
@@ -79,10 +107,18 @@ namespace ImageLab.ViewModels
 
         public MainViewModel()
         {
-            ConvertableFormatsList = new ObservableCollection<Format> { Format.Png, Format.Jpg};
+            ConvertableFormatsList = new ObservableCollection<Format> { Format.NAT, Format.PNG};
 
             SelectOptionCommand = new SelectOptionCommand(this);
             ConvertImageCommand = new ConvertImageCommand(this);
+
+            LoadView();
+        }
+
+        public void LoadView()
+        {
+            UpdateTreeView();
+            UpdateView();
         }
 
         public void UpdateTreeView()
@@ -105,7 +141,7 @@ namespace ImageLab.ViewModels
             foreach (TreeNode item in expandedItems)
             {
                 GridRowModel row = new GridRowModel();
-                row.Name = item.Name;
+                row.Id = item.Id;
 
                 if (item.EntryType == EntryType.Image)
                 {
