@@ -1,5 +1,4 @@
 ﻿using ImageLab.Enumerations;
-using System;
 using System.Collections.ObjectModel;
 
 namespace ImageLab.Models
@@ -16,7 +15,7 @@ namespace ImageLab.Models
         public ObservableCollection<TreeNode> Items { get; set; }
 
         public EntryType EntryType { get; set; }
-        public Boolean Visible
+        public bool Visible
         {
             get { return visible; }
             set
@@ -28,11 +27,11 @@ namespace ImageLab.Models
                 if (value) { visible = value; }
             }
         }
-        public String FullPath { get; set; }
-        public String Name { get; set; }
-        public Int32 Id { get; private set; }
+        public string FullPath { get; set; }
+        public string Name { get; set; }
+        public int Id { get; private set; }
 
-        public static Int32 id;
-        public Boolean visible;
+        public static int id;
+        public bool visible;
     }
 }

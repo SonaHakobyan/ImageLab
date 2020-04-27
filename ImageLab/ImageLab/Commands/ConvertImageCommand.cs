@@ -36,7 +36,7 @@ namespace ImageLab.Commands
                         break;
                 }
 
-                Boolean succeed = converter.Convert(vm.SelectedImage);
+                var succeed = converter.Convert(vm.SelectedImage);
                 if (succeed)
                 {
                     vm.UpdateView();

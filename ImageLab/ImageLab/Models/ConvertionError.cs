@@ -1,5 +1,4 @@
 ﻿using ImageLab.Enumerations;
-using System;
 
 namespace ImageLab.Models
 {
@@ -7,6 +6,6 @@ namespace ImageLab.Models
     {
         public Format Format { get; set; }
 
-        public String Message { get; set; }
+        public string Message { get; set; }
     }
 }

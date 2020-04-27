@@ -34,7 +34,7 @@
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" Style="{StaticResource BorderStyle}">
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
                     <Button Content="Options" Style="{StaticResource ButtonStyle}"
                         Command="{Binding SelectOptionCommand}"/>
                     <ComboBox Name="cb" Style="{StaticResource ComboBoxStyle}"
@@ -53,33 +53,38 @@
                         <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TreeView Grid.Column="0" Style="{StaticResource TreeViewStyle}"
-                                SelectedItemChanged="TreeView_SelectedItemChanged" 
-                                TreeViewItem.Expanded="TreeView_Chnaged" TreeViewItem.Collapsed="TreeView_Chnaged"
-                                ItemsSource="{Binding RootItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <e:Interaction.Behaviors>
-                            <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </e:Interaction.Behaviors>
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Items}">
-                                <TextBlock Text="{Binding Name}" Height="19"/>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="{x:Type TreeViewItem}">                                
-                                <Setter Property="IsExpanded" Value="{Binding Visible, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                    </TreeView>
+                    <Border Background="WhiteSmoke">
+                        <TreeView Grid.Column="0" Style="{StaticResource TreeViewStyle}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                    SelectedItemChanged="TreeView_SelectedItemChanged" 
+                                    TreeViewItem.Expanded="TreeView_Chnaged" TreeViewItem.Collapsed="TreeView_Chnaged"
+                                    ItemsSource="{Binding RootItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <e:Interaction.Behaviors>
+                                <behaviors:BindableSelectedItemBehavior SelectedItem="{Binding SelectedNode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </e:Interaction.Behaviors>
+                            <TreeView.ItemTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type models:TreeNode}" ItemsSource="{Binding Items}">
+                                    <Border BorderThickness="0.45" BorderBrush="Black" Width="400" Background="WhiteSmoke">
+                                        <TextBlock Text="{Binding Name}" Height="17.95" Foreground="Black" />
+                                    </Border>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                            <TreeView.ItemContainerStyle>
+                                <Style TargetType="{x:Type TreeViewItem}">
+                                    <Setter Property="IsExpanded" Value="{Binding Visible, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Style>
+                            </TreeView.ItemContainerStyle>
+                        </TreeView>
+                    </Border>
 
                     <DataGrid Grid.Column="1" Style="{StaticResource DataGridStyle}"
                                 ItemsSource="{Binding ListViewItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedItem="{Binding SelectedRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <DataGrid.Columns >
+                        <DataGrid.Columns>
                             <DataGridTextColumn Header="BMP" Binding="{Binding BmpDetails}"/>
                             <DataGridTextColumn Header="NAT" Binding="{Binding NatDetails}"/>
                             <DataGridTextColumn Header="PNG" Binding="{Binding PngDetails}"/>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                            <DataGridTextColumn Header="ID"  Binding="{Binding Id}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>

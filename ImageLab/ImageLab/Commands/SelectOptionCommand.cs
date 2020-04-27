@@ -11,7 +11,7 @@ namespace ImageLab.Commands
         public SelectOptionCommand(MainViewModel vm)
         {
             this.vm = vm;
-            this.defaultPath = @"C:\Users\hakob\ImageLabResources";
+            this.defaultPath = @"C:\Users\sona.hakobyan\source\repos\NAT\ImageSamples";
             this.vm.RootPath = Properties.Settings.Default.DirectoryPath;
         }
 

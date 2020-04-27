@@ -21,8 +21,8 @@ namespace ImageLab.ViewModels
         #region Bindable Properties
         public string RootPath { get; set; }
 
-        private String selectedImage;
-        public String SelectedImage
+        private string selectedImage;
+        public string SelectedImage
         {
             get => selectedImage;
             set

@@ -21,8 +21,8 @@ namespace ImageLab
 
             if (e.NewValue is TreeNode node && node.EntryType == EntryType.Image)
             {
-                String path = node.FullPath;
-                String ext = Path.GetExtension(path);
+                string path = node.FullPath;
+                string ext = Path.GetExtension(path);
 
                 if (ext.ToLower() != ".bmp")
                 {
