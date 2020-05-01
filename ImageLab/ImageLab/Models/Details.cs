@@ -4,18 +4,18 @@ namespace ImageLab.Models
 {
     public class Details
     {
-        public Int32 Count { get; set; }
+        public int Count { get; set; }
 
-        public Double Size { get; set; }
+        public double Size { get; set; }
 
-        public Double Comparison { get; set; }
+        public double Comparison { get; set; }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String result = $"C:{Count} | S:{Size}";
+            var result = $"C: {Count}  |  S: { string.Format("{0:0.00}", Size / 1024)}";
             if (Comparison > 0)
             {
-                result += $" | Cr:{Comparison} %";
+                result += $" | Cr: {string.Format("{0:0.00}", Comparison)} %";
             }
             return result;
         }

@@ -3,9 +3,8 @@
     public class GridRowModel
     {
         public int Id { get; set; }
-
         public Details BmpDetails { get; set; }
-
         public Details PngDetails { get; set; }
+        public Details NatDetails { get; set; }
     }
 }

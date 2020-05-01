@@ -1,5 +1,6 @@
 ﻿using NAT;
 using NAT.Extensions;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -18,16 +19,19 @@ namespace ImageLab.Services
 
             Debug.Assert(Path.GetExtension(imagePath).Equals(".bmp"), "Select bmp file, please!");
 
-            var bitmap = new Bitmap(imagePath);
-            if (!bitmap.Compare(new Nat(bitmap).GenerateBitmap()))
+            try
             {
-                MessageBox.Show("Conversion failed!");
-                return false;
+                var path = Path.Combine(Path.GetDirectoryName(imagePath), Path.GetFileNameWithoutExtension(imagePath) + ".nat");
+                var nat = new Nat(new Bitmap(imagePath));
+
+                nat.Save(path);
+
             }
-
-            var natPath = Path.Combine(Path.GetDirectoryName(imagePath), Path.GetFileNameWithoutExtension(imagePath) + ".nat");
-            //nat.Save(natPath);
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
             return true;
         }
     }

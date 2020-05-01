@@ -2,7 +2,6 @@
 using ImageLab.Enumerations;
 using ImageLab.Models;
 using ImageLab.Services;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -21,13 +20,13 @@ namespace ImageLab.ViewModels
         #region Bindable Properties
         public string RootPath { get; set; }
 
-        private string selectedImage;
-        public string SelectedImage
+        private string selectedPath;
+        public string SelectedPath
         {
-            get => selectedImage;
+            get => selectedPath;
             set
             {
-                selectedImage = value;
+                selectedPath = value;
                 NotifyPropertyChanged();
             }
         }
@@ -131,36 +130,44 @@ namespace ImageLab.ViewModels
 
         public void UpdateView()
         {
-            List<TreeNode> expandedItems = new List<TreeNode>();
+            var expandedItems = new List<TreeNode>();
             var tree = RootItem.FirstOrDefault();
 
             Helper.GetExpandedItems(tree, expandedItems);
 
-            ObservableCollection<GridRowModel> rows = new ObservableCollection<GridRowModel>();
+            var rows = new ObservableCollection<GridRowModel>();
 
-            foreach (TreeNode item in expandedItems)
+            foreach (var item in expandedItems)
             {
-                GridRowModel row = new GridRowModel();
+                var row = new GridRowModel();
                 row.Id = item.Id;
 
                 if (item.EntryType == EntryType.Image)
                 {
-                    String fileDirectory = Path.GetDirectoryName(item.FullPath);
+                    var fileDirectory = Path.GetDirectoryName(item.FullPath);
 
-                    String fileName = Path.GetFileNameWithoutExtension(item.FullPath);
+                    var fileName = Path.GetFileNameWithoutExtension(item.FullPath);
 
-                    String bmpFilePath = Path.Combine(fileDirectory, fileName + ".bmp");
+                    var bmpFilePath = Path.Combine(fileDirectory, fileName + ".bmp");
 
                     if (File.Exists(bmpFilePath))
                     {
                         row.BmpDetails = Helper.GetDetails(bmpFilePath);
 
-                        String pngFilePath = Path.Combine(fileDirectory, fileName + ".png");
+                        var pngFilePath = Path.Combine(fileDirectory, fileName + ".png");
 
                         if (File.Exists(pngFilePath))
                         {
                             row.PngDetails = Helper.GetDetails(pngFilePath);
                             row.PngDetails.Comparison = 100 / (row.BmpDetails.Size / row.PngDetails.Size);
+                        }
+
+                        var natFilePath = Path.Combine(fileDirectory, fileName + ".nat");
+
+                        if (File.Exists(natFilePath))
+                        {
+                            row.NatDetails = Helper.GetDetails(natFilePath);
+                            row.NatDetails.Comparison = 100 / (row.BmpDetails.Size / row.NatDetails.Size);
                         }
                     }
                 }
@@ -169,6 +176,8 @@ namespace ImageLab.ViewModels
                     row.BmpDetails = Helper.GetDetails(item.FullPath, "*.bmp");
 
                     row.PngDetails = Helper.GetDetails(item.FullPath, "*.png");
+
+                    row.NatDetails = Helper.GetDetails(item.FullPath, "*.nat");
                 }
 
                 rows.Add(row);

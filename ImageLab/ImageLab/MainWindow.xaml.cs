@@ -1,7 +1,6 @@
 ﻿using ImageLab.Enumerations;
 using ImageLab.Models;
 using ImageLab.ViewModels;
-using System;
 using System.IO;
 using System.Windows;
 
@@ -17,23 +16,23 @@ namespace ImageLab
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            (this.DataContext as MainViewModel).SelectedImage = string.Empty;
+            (this.DataContext as MainViewModel).SelectedPath = string.Empty;
 
-            if (e.NewValue is TreeNode node && node.EntryType == EntryType.Image)
+            if (e.NewValue is TreeNode node)
             {
-                string path = node.FullPath;
-                string ext = Path.GetExtension(path);
+                var path = node.FullPath;
 
-                if (ext.ToLower() != ".bmp")
+                if (node.EntryType == EntryType.Image && Path.GetExtension(path).ToLower() != ".bmp")
                 {
                     path = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path) + ".bmp");
                 }
 
-                if (File.Exists(path))
+                if (File.Exists(path) || Directory.Exists(path))
                 {
-                    (this.DataContext as MainViewModel).SelectedImage = path;
+                    (this.DataContext as MainViewModel).SelectedPath = path;
                 }
             }
+
         }
 
         private void TreeView_Chnaged(object sender, RoutedEventArgs e)

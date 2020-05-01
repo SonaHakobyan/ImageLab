@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:e="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:models="clr-namespace:ImageLab.Models"
-        xmlns:convs ="clr-namespace:ImageLab.Converters"
         xmlns:behaviors="clr-namespace:ImageLab.Behaviors"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
@@ -17,7 +16,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source=".\Resources\Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-        <convs:ItemToIdConverter x:Key="ItemToIdConverter"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -46,7 +44,7 @@
                 </StackPanel>
             </Border>
 
-            <Border Grid.Row="1" Style="{StaticResource BorderStyle}">
+            <Border Grid.Row="1" Style="{StaticResource BorderStyle}" BorderThickness="0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*"/>
@@ -84,7 +82,6 @@
                             <DataGridTextColumn Header="BMP" Binding="{Binding BmpDetails}"/>
                             <DataGridTextColumn Header="NAT" Binding="{Binding NatDetails}"/>
                             <DataGridTextColumn Header="PNG" Binding="{Binding PngDetails}"/>
-                            <DataGridTextColumn Header="ID"  Binding="{Binding Id}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -93,8 +90,10 @@
 
         <Border Grid.Column="1" Style="{StaticResource BorderStyle}">
             <StackPanel Grid.Column="1" Orientation="Vertical">
-            <Image Source="{Binding  SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>
+                <Image Source="{Binding  SelectedPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Image x:Name="nat" />
+                <!--<Image x:Name="png" VerticalAlignment="Bottom"/>-->
+            </StackPanel>
         </Border>
     </Grid>
 </Window>

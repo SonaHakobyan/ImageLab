@@ -3,6 +3,7 @@ using ImageLab.Models;
 using ImageLab.Services;
 using ImageLab.ViewModels;
 using System;
+using System.IO;
 
 namespace ImageLab.Commands
 {
@@ -36,15 +37,31 @@ namespace ImageLab.Commands
                         break;
                 }
 
-                var succeed = converter.Convert(vm.SelectedImage);
-                if (succeed)
+                if (string.IsNullOrEmpty(vm.SelectedPath))
                 {
-                    vm.UpdateView();
+                    return;
                 }
-                else
+
+                var paths = new string[] { vm.SelectedPath };
+
+                if ((File.GetAttributes(vm.SelectedPath) & FileAttributes.Directory) == FileAttributes.Directory)
                 {
-                    vm.ConvertionError = new ConvertionError { Format = format };
+                    paths = Directory.GetFiles(vm.SelectedPath, "*.bmp", SearchOption.AllDirectories);
                 }
+
+                foreach (var path in paths)
+                {
+                    var succeed = converter.Convert(path);
+                    if (succeed)
+                    {
+                        vm.UpdateView();
+                    }
+                    else
+                    {
+                        vm.ConvertionError = new ConvertionError { Format = format };
+                    }
+                }
+                
             }           
         }
     }

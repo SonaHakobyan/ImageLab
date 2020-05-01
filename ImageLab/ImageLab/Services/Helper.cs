@@ -12,9 +12,9 @@ namespace ImageLab.Services
     {
         public static void GetTreeView(String basePath, ref TreeNode viewItem, TreeNode parentItem = null)
         {
-            EntryType entryType = GetEntryType(basePath);
+            var entryType = GetEntryType(basePath);
 
-            String name = Path.GetFileNameWithoutExtension(basePath);
+            var name = Path.GetFileNameWithoutExtension(basePath);
 
             if (entryType == EntryType.Image && parentItem != null && parentItem.Items.Any(x => x.Name == name && x.EntryType == entryType))
             {
@@ -33,18 +33,18 @@ namespace ImageLab.Services
 
             if (entryType == EntryType.Directory)
             {
-                List<String> subEntries = new List<String>();
+                var subEntries = new List<String>();
 
-                String[] subDirectories = Directory.GetDirectories(basePath, "*", SearchOption.TopDirectoryOnly);
+                var subDirectories = Directory.GetDirectories(basePath, "*", SearchOption.TopDirectoryOnly);
 
-                String[] subImages = Directory.GetFiles(basePath, "*", SearchOption.TopDirectoryOnly);
+                var subImages = Directory.GetFiles(basePath, "*", SearchOption.TopDirectoryOnly);
 
                 subEntries.AddRange(subDirectories);
                 subEntries.AddRange(subImages);
 
-                foreach (String subEntryPath in subEntries)
+                foreach (var subEntryPath in subEntries)
                 {
-                    TreeNode subItem = new TreeNode();
+                    var subItem = new TreeNode();
 
                     GetTreeView(subEntryPath, ref subItem, viewItem);
                 }
@@ -53,7 +53,7 @@ namespace ImageLab.Services
 
         public static EntryType GetEntryType(String path)
         {
-            FileAttributes attr = File.GetAttributes(path);
+            var attr = File.GetAttributes(path);
 
             return (attr & FileAttributes.Directory) == FileAttributes.Directory ? EntryType.Directory : EntryType.Image;
         }
@@ -65,7 +65,7 @@ namespace ImageLab.Services
                 checkedItems.Add(sourceItem);
             }
 
-            foreach (TreeNode item in sourceItem.Items)
+            foreach (var item in sourceItem.Items)
             {
                 GetCheckedItems(item, checkedItems);
             }
@@ -79,19 +79,19 @@ namespace ImageLab.Services
             }
 
             expandedItems.Add(sourceItem);
-            foreach (TreeNode item in sourceItem.Items)
+            foreach (var item in sourceItem.Items)
             {
                 GetExpandedItems(item, expandedItems);
             }
         }
 
-        public static Details GetDetails(String path, String searchPattern = null)
+        public static Details GetDetails(string path, string searchPattern = null)
         {
-            EntryType entryType = Helper.GetEntryType(path);
+            var entryType = Helper.GetEntryType(path);
 
             if (entryType == EntryType.Image)
             {
-                FileInfo fileInfo = new FileInfo(path);
+                var fileInfo = new FileInfo(path);
 
                 return new Details
                 {
@@ -101,13 +101,13 @@ namespace ImageLab.Services
             }
             else
             {
-                String[] files = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
+                var files = Directory.GetFiles(path, searchPattern, SearchOption.AllDirectories);
 
                 Double size = 0;
 
-                foreach (String file in files)
+                foreach (var file in files)
                 {
-                    FileInfo fileInfo = new FileInfo(file);
+                    var fileInfo = new FileInfo(file);
 
                     size += fileInfo.Length;
                 }

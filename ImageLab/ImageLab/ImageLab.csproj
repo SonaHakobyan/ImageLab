@@ -84,7 +84,6 @@
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ConvertImageCommand.cs" />
     <Compile Include="Commands\SelectOptionCommand.cs" />
-    <Compile Include="Converters\ItemToIdConverter.cs" />
     <Compile Include="Enumerations\EntryType.cs" />
     <Compile Include="Enumerations\Format.cs" />
     <Compile Include="Models\ConvertionError.cs" />
@@ -140,12 +139,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\folderIcon.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\imageIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
