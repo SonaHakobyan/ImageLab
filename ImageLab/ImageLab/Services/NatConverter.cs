@@ -1,8 +1,6 @@
 ﻿using NAT;
-using NAT.Extensions;
 using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Windows;
 
@@ -10,21 +8,15 @@ namespace ImageLab.Services
 {
     public class NatConverter : IFormatConverter
     {
-        public bool Convert(string imagePath)
+        public bool Convert(string bmpFilePath)
         {
-            if (!File.Exists(imagePath))
-            {
-                return false;
-            }
-
-            Debug.Assert(Path.GetExtension(imagePath).Equals(".bmp"), "Select bmp file, please!");
+            if (!File.Exists(bmpFilePath)) { return false; }
+            Debug.Assert(Path.GetExtension(bmpFilePath).Equals(".bmp"), "Select bmp file, please!");
 
             try
             {
-                var path = Path.Combine(Path.GetDirectoryName(imagePath), Path.GetFileNameWithoutExtension(imagePath) + ".nat");
-                var nat = new Nat(new Bitmap(imagePath));
-
-                nat.Save(path);
+                var natFilePath = Path.Combine(Path.GetDirectoryName(bmpFilePath), Path.GetFileNameWithoutExtension(bmpFilePath) + ".nat");
+                Converter.ConvertToNat(bmpFilePath, natFilePath);
 
             }
             catch (Exception ex)

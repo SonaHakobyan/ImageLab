@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ImageLab.Models
+﻿namespace ImageLab.Models
 {
     public class Details
     {
@@ -12,7 +10,13 @@ namespace ImageLab.Models
 
         public override string ToString()
         {
-            var result = $"C: {Count}  |  S: { string.Format("{0:0.00}", Size / 1024)}";
+            var result = $"S: { string.Format("{0:0.00}", Size / 1024)}";
+            if (Count > 1)
+            {
+                result += $"  | C: {Count}";
+
+            }
+
             if (Comparison > 0)
             {
                 result += $" | Cr: {string.Format("{0:0.00}", Comparison)} %";
